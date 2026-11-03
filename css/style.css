@@ -1,16 +1,31 @@
-#caja {
-    width: 250px;
-    height: 250px;
-    background-color: #3498db;
-    margin: 50px auto;
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+#contenedor {
+    width: 320px;
+    height: 320px;
+    margin: 30px auto;
+    overflow: hidden;
+    border: 3px solid #333;
     border-radius: 12px;
+    background: white;
+    touch-action: none; /* Muy importante */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 1.4rem;
-    font-family: Arial, sans-serif;
+}
+
+#e4 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: center center;
+    transition: transform 0.05s ease-out; /* Suaviza un poco el movimiento */
     user-select: none;
-    touch-action: none; /* Evita gestos del navegador */
-    transition: background-color 0.2s;
+    -webkit-user-drag: none;
 }
