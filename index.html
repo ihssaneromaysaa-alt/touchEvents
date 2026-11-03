@@ -8,9 +8,61 @@
     <script defer src="index.js"></script>
 </head>
 <body>
-    <h1>ejecicio 4</h1>
-    <div id="contenedor">
-        <img id="imagen" src="https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg" alt="Imagen para zoom">
-    </div>
+    <h1>Ejercicios de Eventos Touch</h1>
+
+    <!-- ==================== EJERCICIO 4 ==================== -->
+    <section id="ejercicio4">
+        <h2>4. Pinch to Zoom</h2>
+        <div id="contenedor-zoom">
+            <img id="imagen-zoom" src="https://picsum.photos/400/400" alt="Imagen zoom">
+        </div>
+        <p class="pista">Usa dos dedos para hacer zoom</p>
+    </section>
+
+    <!-- ==================== EJERCICIO 5 ==================== -->
+    <section id="ejercicio5">
+        <h2>5. Doble Toque + Long Press</h2>
+        <button id="btn-gestos">Tócame</button>
+        
+        <!-- Menú contextual oculto (aparece con long press) -->
+        <div id="menu-contextual" class="oculto">
+            <p>Menú Contextual</p>
+            <button>Opción 1</button>
+            <button>Opción 2</button>
+            <button id="cerrar" >Cerrar</button>
+        </div>
+        <p class="pista">Doble toque → círculo | Mantén 1 segundo → menú</p>
+    </section>
+
+    <!-- ==================== EJERCICIO 6 ==================== -->
+    <section id="ejercicio6">
+        <h2>6. Carrusel Magnético</h2>
+        <div id="carrusel-wrapper">
+            <div id="carrusel">
+                <div class="tarjeta">1</div>
+                <div class="tarjeta">2</div>
+                <div class="tarjeta">3</div>
+                <div class="tarjeta">4</div>
+                <div class="tarjeta">5</div>
+                <div class="tarjeta">6</div>
+            </div>
+        </div>
+        <p class="pista">Desliza y suelta → se centra la tarjeta más cercana</p>
+    </section>
+
+    <!-- ==================== EJERCICIO 7 ==================== -->
+    <section id="ejercicio7">
+        <h2>7. Drag & Drop con Touch</h2>
+        
+        <div id="zona-juego">
+            <!-- Círculo arrastrable -->
+            <div id="circulo"></div>
+
+            <!-- Zonas de caída -->
+            <div class="caja-drop" id="caja1">Caja 1</div>
+            <div class="caja-drop" id="caja2">Caja 2</div>
+        </div>
+        <p class="pista">Arrastra el círculo y suéltalo dentro de una caja</p>
+    </section>
 </body>
 </html>
