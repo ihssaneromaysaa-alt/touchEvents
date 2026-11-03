@@ -1,6 +1,4 @@
-// ======================================================
-//  EJERCICIO 4 - PINCH TO ZOOM (YA HECHO)
-// ======================================================
+// ej 4 touch move
 const contenedorZoom = document.getElementById("contenedor-zoom");
 const imagenZoom = document.getElementById("imagen-zoom");
 
@@ -29,7 +27,7 @@ contenedorZoom.addEventListener("touchmove", (e) => {
         const ratio = distanciaActual / distanciaInicial;
         let nuevaEscala = escalaAlIniciar * ratio;
 
-        // Limitamos el zoom entre 0.5x y 4x
+        // limitamos el zoom entre 0.5x y 4x
         nuevaEscala = Math.min(Math.max(0.5, nuevaEscala), 4);
 
         imagenZoom.style.transform = `scale(${nuevaEscala})`;
@@ -44,28 +42,6 @@ contenedorZoom.addEventListener("touchend", (e) => {
 });
 
 // ejercicio 5 doble toque
-/*
-    PISTAS:
-
-    1. Necesitas dos variables de tiempo:
-       - lastTap → para guardar cuándo fue el último toque (Date.now())
-       - longPressTimer → para el setTimeout del long press
-
-    2. En touchstart:
-       - Guarda la hora actual
-       - Si la diferencia con lastTap es < 300ms → es DOBLE TOQUE
-         → cambia border-radius a 50% (círculo)
-       - Inicia un setTimeout de 1000ms para el LONG PRESS
-         → si se cumple, muestra el menú contextual
-
-    3. En touchend o touchmove:
-       - Cancela el timer del long press con clearTimeout()
-       - (Si se movió el dedo, ya no cuenta como long press)
-
-    4. Para el menú contextual:
-       - Quita la clase "oculto"
-       - Posiciónalo cerca del botón (puedes usar getBoundingClientRect)
-*/
 
 const btnGestos = document.getElementById("btn-gestos");
 const menuContextual = document.getElementById("menu-contextual");
@@ -103,10 +79,7 @@ btnGestos.addEventListener("touchmove", () => {
   clearTimeout(longPressTimer);
 });
 
-
-// ======================================================
-//  EJERCICIO 6 - CARRUSEL MAGNÉTICO (SNAP)
-// ======================================================
+ // ej 6 carrusel magnetico
 /*
     PISTAS:
 
