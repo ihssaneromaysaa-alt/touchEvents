@@ -111,15 +111,47 @@ const carrusel = document.getElementById("carrusel");
 const wrapper = document.getElementById("carrusel-wrapper");
 
 // Variables que vas a necesitar:
-// let startX = 0;
-// let currentTranslate = 0;
-// let prevTranslate = 0;
-// let isDragging = false;
+let startX = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+let isDragging = false;
 
-// carrusel.addEventListener("touchstart", (e) => { ... });
-// carrusel.addEventListener("touchmove", (e) => { ... });
-// carrusel.addEventListener("touchend", () => { ... });
+carrusel.addEventListener("touchstart", (e) => {
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  prevTranslate = currentTranslate;
 
+  carrusel.style.transition = "none";
+});
+carrusel.addEventListener("touchmove", (e) => { 
+   if(!isDragging) return;
+   const currentX = e.touches[0].clientX;
+   const diff = currentX - startX;
+
+   currentTranslate = prevTranslate + diff;
+   carrusel.style.transform = `translateX(${currentTranslate})`;
+ });
+carrusel.addEventListener("touchend", () => {
+  isDragging = false;
+
+  const cardWidth = 280;
+  const gap = 15;   
+  const totalCard = cardWidth + gap;
+
+  const index = Math.round(-currentTranslate / totalCard);
+
+  // limitamos el índice para que no se salga de las tarjetas
+  const maxIndex = carrusel.children.length - 1;
+  const safeIndex = Math.max(0, Math.min(index, maxIndex));
+
+  currentTranslate = -safeIndex * totalCard;
+
+  // activamos la transición suave
+  carrusel.style.transition = "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+  carrusel.style.transform = `translateX(${currentTranslate}px)`;
+
+  prevTranslate = currentTranslate;
+});
 
 // ======================================================
 //  EJERCICIO 7 - DRAG & DROP CON TOUCH
