@@ -80,33 +80,6 @@ btnGestos.addEventListener("touchmove", () => {
 });
 
  // ej 6 carrusel magnetico
-/*
-    PISTAS:
-
-    1. Variables necesarias:
-       - startX → posición X donde empezó el toque
-       - currentTranslate → cuánto está desplazado el carrusel actualmente
-       - prevTranslate → posición anterior (para calcular el movimiento)
-
-    2. touchstart:
-       - Guarda e.touches[0].clientX en startX
-       - Quita cualquier transición (para que se mueva libre)
-
-    3. touchmove:
-       - Calcula la diferencia: e.touches[0].clientX - startX
-       - Aplica transform: translateX(...) al #carrusel
-
-    4. touchend (lo más importante):
-       - Calcula en qué posición se quedó
-       - Averigua qué tarjeta está más cerca del centro
-       - Aplica una transición CSS suave
-       - Mueve el carrusel hasta que esa tarjeta quede centrada
-
-    5. Truco para el snap:
-       - Ancho de cada tarjeta + gap
-       - Math.round(posicion / anchoTarjeta) → índice de la tarjeta más cercana
-*/
-
 const carrusel = document.getElementById("carrusel");
 const wrapper = document.getElementById("carrusel-wrapper");
 
@@ -153,45 +126,85 @@ carrusel.addEventListener("touchend", () => {
   prevTranslate = currentTranslate;
 });
 
-// ======================================================
-//  EJERCICIO 7 - DRAG & DROP CON TOUCH
-// ======================================================
-/*
-    PISTAS IMPORTANTES:
-
-    1. El círculo se mueve con position: absolute + left/top
-       o con transform: translate()
-
-    2. touchstart:
-       - Guarda la posición inicial del dedo y del círculo
-
-    3. touchmove:
-       - Calcula cuánto se ha movido el dedo
-       - Actualiza left y top del círculo (o el transform)
-
-    4. touchend → AQUÍ ESTÁ EL RETO:
-       - Los eventos touch NO saben sobre qué elemento estás
-       - Usa: document.elementFromPoint(x, y)
-       - Pásale las coordenadas del último toque
-       - Si el elemento encontrado tiene la clase "caja-drop"
-         → mueve el círculo dentro de esa caja
-         → puedes cambiar el estilo de la caja (clase "ocupada")
-
-    5. Para centrar el círculo dentro de la caja:
-       - Puedes usar getBoundingClientRect() de la caja
-       - O simplemente appendChild + posición relativa
-*/
-
+// ejercicio 7
 const circulo = document.getElementById("circulo");
 const cajas = document.querySelectorAll(".caja-drop");
 
-// Variables que vas a necesitar:
-// let offsetX = 0;
-// let offsetY = 0;
-// let isDraggingCircle = false;
+let offsetX = 0;
+let offsetY = 0;
+let isDraggingCircle = false;
+let startLeft = 0;
+let startTop = 0;
 
-// circulo.addEventListener("touchstart", (e) => { ... });
-// circulo.addEventListener("touchmove", (e) => { ... });
-// circulo.addEventListener("touchend", (e) => {
-//     // Aquí usas document.elementFromPoint(...)
-// });
+circulo.addEventListener("touchstart", (e) => {
+  e.preventDefault(); 
+  isDraggingCircle = true;
+
+  const touch = e.touches[0];
+  const rect = circulo.getBoundingClientRect();
+
+  // distancia entre el dedo y la esquina superior izquierda del círculo
+  offsetX = touch.clientX - rect.left;
+  offsetY = touch.clientY - rect.top;
+
+  // guardamos la posición actual (por si usas left/top)
+  startLeft = rect.left + window.scrollX;
+  startTop = rect.top + window.scrollY;
+
+  // subimos el círculo por encima de todo mientras se arrastra
+  circulo.style.zIndex = "1000";
+  circulo.style.transition = "none";
+});
+
+circulo.addEventListener("touchmove", (e) => {
+  if (!isDraggingCircle) return;
+  e.preventDefault();
+
+  const touch = e.touches[0];
+
+  // nueva posición del círculo
+  const newLeft = touch.clientX - offsetX;
+  const newTop = touch.clientY - offsetY;
+
+  // movemos con left / top (posición absoluta)
+  /*
+  circulo.style.left = newLeft + "px";
+  circulo.style.top = newTop + "px";
+*/
+  // alternativa con transform (más fluida):
+  circulo.style.transform = `translate(${newLeft}px, ${newTop}px)`;
+});
+
+circulo.addEventListener("touchend", (e) => {
+  if (!isDraggingCircle) return;
+  isDraggingCircle = false;
+
+  // coordenadas del último toque
+  const touch = e.changedTouches[0];
+  const x = touch.clientX;
+  const y = touch.clientY;
+
+  // buscamos qué elemento está debajo del dedo
+  const elementoDebajo = document.elementFromPoint(x, y);
+
+  if (elementoDebajo && elementoDebajo.classList.contains("caja-drop")) {
+    
+    // movemos el círculo dentro de la caja
+    elementoDebajo.appendChild(circulo);
+
+    // centramos el círculo dentro de la caja
+    circulo.style.position = "relative";
+    circulo.style.left = "50%";
+    circulo.style.top = "50%";
+    circulo.style.transform = "translate(-50%, -50%)";
+    circulo.style.zIndex = "1";
+
+    // marcamos la caja como ocupada
+    elementoDebajo.classList.add("ocupada");
+
+  } else {
+    // si no soltó sobre una caja, lo dejamos donde está
+    // (o puedes devolverlo a la posición original)
+    circulo.style.zIndex = "1";
+  }
+});
